@@ -1,5 +1,5 @@
 import { InsertTask } from "../../../domain/usecases/insert-task.usecase"
-import { badRequest, created } from "../helpers/http.helper"
+import { badRequest, created, serverError } from "../helpers/http.helper"
 import { Request, Response } from "../protocols/http.interface"
 
 export class InsertTaskController {
@@ -24,10 +24,7 @@ export class InsertTaskController {
   
       return created(task)
     } catch {
-      return {
-        statusCode: 500,
-        body: new Error('ServerError')
-      }
+      return serverError(new Error('ServerError'))
     }
   }
 }

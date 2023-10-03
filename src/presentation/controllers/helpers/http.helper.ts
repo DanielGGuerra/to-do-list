@@ -9,3 +9,8 @@ export const created = (body: object | string): Response => ({
   statusCode: 201,
   body: body
 })
+
+export const serverError = (error: Error): Response => ({
+  statusCode: 500,
+  body: error
+})

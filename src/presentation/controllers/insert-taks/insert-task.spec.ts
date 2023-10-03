@@ -1,12 +1,22 @@
 import { TaskModel } from "../../../domain/models/task.model"
 import { InsertTask, InsertTaskModel } from "../../../domain/usecases/insert-task.usecase"
+import { created, serverError } from "../helpers/http.helper"
+import { Request } from "../protocols/http.interface"
 import { InsertTaskController } from "./insert-taks.controller"
 
 const makeFakeTask = (): TaskModel => ({
   id: 'valid_id',
   title: 'valid_title',
-  description: 'valid_name',
+  description: 'valid_description',
   date: new Date(2020, 1, 10, 10, 0, 0, 0),
+})
+
+const makeFakeRequest = (): Request => ({
+  body: {
+    title: 'valid_title',
+    description: 'valid_description',
+    date: new Date(2020, 1, 10)
+  }
 })
 
 const makeInsertTaskStub = (): InsertTask => {
@@ -73,46 +83,19 @@ describe('InsertTaskController', () => {
 
     jest.spyOn(insertTaskStub, 'insert').mockRejectedValueOnce(new Error())
 
-    const response = await sut.handle({
-      body: {
-        title: 'any_title',
-        description: 'any_description',
-        date: new Date(2020, 1, 10)
-      }
-    })
-
-    expect(response.statusCode).toBe(500)
-    expect(response.body).toEqual(new Error('ServerError'))
+    const response = await sut.handle(makeFakeRequest())
+    
+    expect(response).toEqual(serverError(new Error('ServerError')))
   })
   test('should call InsertTask with correct values', async () => {
     const {sut, insertTaskStub} = makeSut()
-
     const insertSpy = jest.spyOn(insertTaskStub, 'insert')
-
-    await sut.handle({
-      body: {
-        title: 'any_title',
-        description: 'any_description',
-        date: new Date(2020, 1, 10)
-      }
-    })
-
-    expect(insertSpy).toHaveBeenCalledWith({
-      title: 'any_title',
-      description: 'any_description',
-      date: new Date(2020, 1, 10)
-    })
+    await sut.handle(makeFakeRequest())
+    expect(insertSpy).toHaveBeenCalledWith(makeFakeRequest().body)
   })
   test('should return 201 if valid data is provid', async () => {
     const {sut} = makeSut()
-    const response = await sut.handle({
-      body: {
-        title: 'any_title',
-        description: 'any_description',
-        date: new Date(2020, 1, 10)
-      }
-    })
-    expect(response.statusCode).toBe(201)
-    expect(response.body).toEqual(makeFakeTask())
+    const response = await sut.handle(makeFakeRequest())
+    expect(response).toEqual(created(makeFakeTask()))
   })
 })

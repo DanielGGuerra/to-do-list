@@ -2,16 +2,18 @@ import { TaskModel } from "../../../domain/models/task.model"
 import { InsertTask, InsertTaskModel } from "../../../domain/usecases/insert-task.usecase"
 import { InsertTaskController } from "./insert-taks.controller"
 
+const makeFakeTask = (): TaskModel => ({
+  id: 'valid_id',
+  title: 'valid_title',
+  description: 'valid_name',
+  date: new Date(2020, 1, 10, 10, 0, 0, 0),
+})
+
 const makeInsertTaskStub = (): InsertTask => {
   class InsertTaskStub implements InsertTask {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async insert(task: InsertTaskModel): Promise<TaskModel> {
-      return await Promise.resolve({
-        id: 'valid_id',
-        title: 'valid_title',
-        description: 'valid_name',
-        date: new Date(2020, 1, 10, 10, 0, 0, 0),
-      })
+      return await Promise.resolve(makeFakeTask())
     }
   }
   return new InsertTaskStub()
@@ -100,5 +102,17 @@ describe('InsertTaskController', () => {
       description: 'any_description',
       date: new Date(2020, 1, 10)
     })
+  })
+  test('should return 201 if valid data is provid', async () => {
+    const {sut} = makeSut()
+    const response = await sut.handle({
+      body: {
+        title: 'any_title',
+        description: 'any_description',
+        date: new Date(2020, 1, 10)
+      }
+    })
+    expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual(makeFakeTask())
   })
 })

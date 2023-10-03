@@ -16,13 +16,13 @@ export class InsertTaskController {
         }
       }
   
-      await this.insertTask.insert({
+      const task = await this.insertTask.insert({
         title: request.body.title,
         description: request.body.description,
         date: request.body.date
       })
   
-      return created('')
+      return created(task)
     } catch {
       return {
         statusCode: 500,

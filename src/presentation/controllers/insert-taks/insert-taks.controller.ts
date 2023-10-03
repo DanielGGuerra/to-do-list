@@ -1,3 +1,4 @@
+import { badRequest, created } from "../helpers/http.helper"
 import { Request, Response } from "../protocols/http.interface"
 
 export class InsertTaskController {
@@ -6,15 +7,9 @@ export class InsertTaskController {
 
     for(const column of columns) {
       if(!request.body[column]) {
-        return {
-          statusCode: 400,
-          body: new Error(`MissingParamError: ${column}`)
-        }
+        return badRequest(new Error(`MissingParamError: ${column}`))
       }
     }
-    return {
-      statusCode: 200,
-      body: undefined
-    }
+    return created('')
   }
 }

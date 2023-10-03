@@ -4,7 +4,8 @@
   "description": "Task List API",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:unit": "npm test -- --watch",
     "test:staged": "npm test --findRelatedTests",
     "prepare": "husky install"
   },

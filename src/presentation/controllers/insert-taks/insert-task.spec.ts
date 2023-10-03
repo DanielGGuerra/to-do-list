@@ -82,4 +82,23 @@ describe('InsertTaskController', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body).toEqual(new Error('ServerError'))
   })
+  test('should call InsertTask with correct values', async () => {
+    const {sut, insertTaskStub} = makeSut()
+
+    const insertSpy = jest.spyOn(insertTaskStub, 'insert')
+
+    await sut.handle({
+      body: {
+        title: 'any_title',
+        description: 'any_description',
+        date: new Date(2020, 1, 10)
+      }
+    })
+
+    expect(insertSpy).toHaveBeenCalledWith({
+      title: 'any_title',
+      description: 'any_description',
+      date: new Date(2020, 1, 10)
+    })
+  })
 })

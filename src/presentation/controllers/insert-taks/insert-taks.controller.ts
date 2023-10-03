@@ -2,16 +2,14 @@ import { Request, Response } from "../protocols/http.interface"
 
 export class InsertTaskController {
   handle(request: Request): Response {
-    if(!request.body.description) {
-      return {
-        statusCode: 400,
-        body: new Error('MissingParamError: description')
-      }
-    }
-    if(!request.body.title) {
-      return {
-        statusCode: 400,
-        body: new Error('MissingParamError: title')
+    const columns = ['description', 'title']
+
+    for(const column of columns) {
+      if(!request.body[column]) {
+        return {
+          statusCode: 400,
+          body: new Error(`MissingParamError: ${column}`)
+        }
       }
     }
     return {

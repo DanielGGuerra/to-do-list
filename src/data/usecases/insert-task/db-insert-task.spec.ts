@@ -51,4 +51,9 @@ describe('DbInsertTask Usecase', () => {
 
     expect(response).rejects.toThrow()
   })
+  test('should return an task on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.insert(makeFakeTaskData())
+    expect(response).toEqual(makeFakeTaskModel())
+  })
 })

@@ -8,12 +8,6 @@ export class DbInsertTask implements InsertTask {
   ) {}
   
   async insert (task: InsertTaskModel): Promise<TaskModel> {
-    await this.insertTaskRepository.insert(task)
-    return Promise.resolve({
-      id: '',
-      title: '',
-      date: new Date(),
-      description: ''
-    })
+    return await this.insertTaskRepository.insert(task)
   }
 }

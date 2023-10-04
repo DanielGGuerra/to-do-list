@@ -1,6 +1,6 @@
 import { TaskModel } from "../../../domain/models/task.model"
 import { InsertTaskModel } from "../../../domain/usecases/insert-task.usecase"
-import { InsertTaskRepository } from "../protocols/insert-task-repository"
+import { InsertTaskRepository } from "../../protocols/insert-task-repository"
 import { DbInsertTask } from "./db-insert-task"
 
 const makeFakeTaskData = (): InsertTaskModel => ({

@@ -1,6 +1,6 @@
 import { TaskModel } from "../../../domain/models/task.model";
 import { InsertTask, InsertTaskModel } from "../../../domain/usecases/insert-task.usecase";
-import { InsertTaskRepository } from "../protocols/insert-task-repository";
+import { InsertTaskRepository } from "../../protocols/insert-task-repository";
 
 export class DbInsertTask implements InsertTask {
   constructor(

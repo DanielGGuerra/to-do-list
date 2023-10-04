@@ -1,6 +1,6 @@
 import { InsertTask } from "../../../domain/usecases/insert-task.usecase"
-import { badRequest, created, serverError } from "../helpers/http.helper"
-import { Request, Response } from "../protocols/http.interface"
+import { badRequest, created, serverError } from "../../helpers/http.helper"
+import { Request, Response } from "../../protocols/http.interface"
 
 export class InsertTaskController {
   constructor(

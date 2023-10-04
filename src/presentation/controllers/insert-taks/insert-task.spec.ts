@@ -1,7 +1,7 @@
 import { TaskModel } from "../../../domain/models/task.model"
 import { InsertTask, InsertTaskModel } from "../../../domain/usecases/insert-task.usecase"
-import { created, serverError } from "../helpers/http.helper"
-import { Request } from "../protocols/http.interface"
+import { created, serverError } from "../../helpers/http.helper"
+import { Request } from "../../protocols/http.interface"
 import { InsertTaskController } from "./insert-taks.controller"
 
 const makeFakeTask = (): TaskModel => ({
@@ -80,11 +80,8 @@ describe('InsertTaskController', () => {
   })
   test('should return 500 if InsertTask return throws', async () => {
     const {sut, insertTaskStub} = makeSut()
-
     jest.spyOn(insertTaskStub, 'insert').mockRejectedValueOnce(new Error())
-
     const response = await sut.handle(makeFakeRequest())
-    
     expect(response).toEqual(serverError(new Error('ServerError')))
   })
   test('should call InsertTask with correct values', async () => {
